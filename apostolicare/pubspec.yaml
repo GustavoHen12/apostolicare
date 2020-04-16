@@ -60,6 +60,9 @@ flutter:
     - family: Myicons
       fonts:
         - asset: icons/MyIcons.ttf
+    - family: SocialIcons
+      fonts:
+        - asset: icons/SocialIcons.ttf
     - family: RobotoMono
       fonts:
         - asset: fonts/Roboto-Black.ttf

@@ -24,27 +24,27 @@ class MessagesApi{
       {
           "name":"Gorila Laranja",
           "img":"https://images.unsplash.com/photo-1545912453-db258ca9b7b7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-          "text":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam blandit erat vel nulla blandit luctus sit amet in arcu"
+          "text":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam blandit erat vel nulla blandit luctus"
       },
       {
           "name":"Caldas Aulete",
           "img":"https://images.unsplash.com/photo-1565260524775-7e9b536fba2f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-          "text":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam blandit erat vel nulla blandit luctus sit amet in arcu"
+          "text":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam blandit erat vel nulla blandit luctus"
       },
       {
           "name":"Dinossauro Azul",
           "img":"https://images.unsplash.com/photo-1529397938791-2aba4681454f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-          "text":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam blandit erat vel nulla blandit luctus sit amet in arcu"
+          "text":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam blandit erat vel nulla blandit luctus"
       },
       {
           "name":"Gorila Laranja",
           "img":"https://images.unsplash.com/photo-1545912453-db258ca9b7b7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-          "text":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam blandit erat vel nulla blandit luctus sit amet in arcu"
+          "text":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam blandit erat vel nulla blandit luctus"
       },
       {
           "name":"Caldas Aulete",
           "img":"https://images.unsplash.com/photo-1565260524775-7e9b536fba2f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-          "text":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam blandit erat vel nulla blandit luctus sit amet in arcu"
+          "text":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam blandit erat vel nulla blandit luctus"
       }
     ]""";
     return jsonDecode(json);
