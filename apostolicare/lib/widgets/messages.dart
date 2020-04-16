@@ -24,7 +24,6 @@ class MessagesStates extends State<Messages>{
   //constroi informacoes que serao disponiblizadas depois
   void loadInfo()
   {
-    //_info.add(_buildText(_name));
     _info.add(_buildText(_text));
     _info.add(_buidContact());
   }
@@ -88,7 +87,7 @@ class MessagesStates extends State<Messages>{
       margin: EdgeInsets.only(right: 10.0, left: 25.0),
       height: 80,
       width: 80,
-      child: //eh para preencher todo o container ,
+      child:
         ClipRRect(
           borderRadius:  BorderRadius.circular(18.0),
           child: new AspectRatio(
@@ -155,37 +154,3 @@ class MessagesStates extends State<Messages>{
     );
   }
 }
-
-// return Container(
-//       width: 250,
-//       padding: EdgeInsets.all(5.0),
-//       child: new Column( 
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         mainAxisAlignment: MainAxisAlignment.start,
-//         children: <Widget>[
-//           Text(name,
-//               style: TextStyle( fontFamily: 'RobotoMono',
-//                                 fontWeight: FontWeight.bold,
-//                                 fontSize: 17,
-//                                 color: Colors.black),
-//               textAlign: TextAlign.left,
-//               overflow: TextOverflow.clip,
-//               ),
-//           Expanded(
-//             child:
-//             Container( 
-//             margin: EdgeInsets.only(top: 3),
-//             child:
-//               Text(text,
-//                     style: TextStyle(fontFamily: 'RobotoMono',
-//                                     fontWeight: FontWeight.w400,
-//                                     fontSize: 15,
-//                                     color: Colors.black.withOpacity(0.8),),
-//                     overflow: TextOverflow.clip,
-//                     textAlign: TextAlign.left,
-//               ),
-//             )
-//           )
-//         ],
-//       ),
-//     );

@@ -38,9 +38,10 @@ class HomeStates extends State<Home>{
         children:[
           _buildAppBar(),
           _buildMessages(),
-          //_buildBottomButton(),
         ]
-      )  
+      ),
+      floatingActionButton: _buildBottomButton(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,  
     );
   }
 
@@ -71,9 +72,21 @@ class HomeStates extends State<Home>{
     );
   }
 
+  Widget _buildBottomButton()
+  {
+  return new Container(
+    margin: EdgeInsets.only(bottom: 10),
+    child:
+    FloatingActionButton.extended(
+        onPressed: () {
+        },
+        label: Text('NEW MESSAGE'),
+        backgroundColor: Colors.red,
+    ));
+  }
+
   void loadMessages() async{
     List result = await repository.loadMessages();
-    print('****- : ${result.length}');
     setState(() {
       result.forEach((item) {
         var message = new Messages(
@@ -88,7 +101,6 @@ class HomeStates extends State<Home>{
 
   Widget _buildMessages()
   {
-    print('*** : ${_messages.length}');
     return new Expanded(
         //   height:900,    
           child:
