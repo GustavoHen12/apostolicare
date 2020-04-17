@@ -89,10 +89,12 @@ class HomeStates extends State<Home>{
     List result = await repository.loadMessages();
     setState(() {
       result.forEach((item) {
+        print("***: ${item['contact']}");
         var message = new Messages(
           item['img'],
           item['name'],
-          item['text']
+          item['text'],
+          item['contact']
           );
         _messages.add(message);
       });
