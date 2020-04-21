@@ -1,5 +1,5 @@
 <h1 align="center">
-    <img alt="apostolicare" title="apostolicare" src="prototype/logo.png" width= "200px" />
+    <img alt="apostolicare" title="apostolicare" src=".github/logo.png" width= "200px" />
 </h1>
 
 <h4 align="center">
@@ -8,9 +8,9 @@
 
 
 <p align="center">
-  <img alt="loginPage" src="prototype/loginPage.png" width="20%">
-  <img alt="initialPage2" src="prototype/initialPage2.png" width="20%">
-  <img alt="home-usuarioA11" src="prototype/home-usuarioA11.png" width="20%">
+  <img alt="loginPage" src=".github/loginPage.png" width="20%">
+  <img alt="initialPage2" src=".github/initialPage2.png" width="20%">
+  <img alt="home-usuarioA11" src=".github/home-usuarioA11.png" width="20%">
 </p>
 
 ## 📜 Abstract
