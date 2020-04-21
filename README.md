@@ -1,7 +1,7 @@
 <h1 align="center">
     🚑 Apostolicare
 </h4>
-
+<br>
 
 <p align="center">
   <img alt="loginPage" src=".github/loginPage.png" width="20%">
