@@ -1,11 +1,7 @@
 <h1 align="center">
-    <img alt="apostolicare" title="apostolicare" src=".github/logo.png" width= "200px" />
-</h1>
-
-<h4 align="center">
     🚑 Apostolicare
 </h4>
-
+<br>
 
 <p align="center">
   <img alt="loginPage" src=".github/loginPage.png" width="20%">
