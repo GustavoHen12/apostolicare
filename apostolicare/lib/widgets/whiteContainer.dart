@@ -10,8 +10,7 @@ class WhiteContainers extends StatelessWidget
   Widget build (BuildContext context)
   {
     return Container(
-      width: 300,
-      height: 150,
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical:10),
       decoration: BoxDecoration(
                     color: Colors.white,
                     boxShadow: [BoxShadow(
