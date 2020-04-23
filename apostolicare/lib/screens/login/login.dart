@@ -1,3 +1,4 @@
+import 'package:apostolicare/widgets/Mainbutton.dart';
 import 'package:apostolicare/widgets/whiteContainer.dart';
 import 'package:flutter/material.dart';
 
@@ -49,7 +50,8 @@ class Login extends StatelessWidget
       child: Center(
       child: WhiteContainers(
         child: Center(child:
-          Text("TEXTO")
+          MainButton(onPressed: () {}, 
+            child: Text("Enviar"))
           ),
         )
       )
