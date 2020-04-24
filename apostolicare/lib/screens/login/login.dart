@@ -1,3 +1,4 @@
+import 'package:apostolicare/screens/newUser/questions/firsPage.dart';
 import 'package:apostolicare/widgets/Mainbutton.dart';
 import 'package:apostolicare/widgets/SecundaryButton.dart';
 import 'package:apostolicare/widgets/whiteContainer.dart';
@@ -178,10 +179,8 @@ class LoginFormState extends State<LoginForm> {
           SecundaryButton(
               onPressed: () {
                 //vai para tela de novo usuario
-                if (_formKey.currentState.validate()) {
-                  Scaffold.of(context)
-                      .showSnackBar(SnackBar(content: Text('Processing Data')));
-                }
+                Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => Questions1()));
               },
               child: Text('Sign in',
                           style: TextStyle(fontFamily: 'RobotoMono', 
