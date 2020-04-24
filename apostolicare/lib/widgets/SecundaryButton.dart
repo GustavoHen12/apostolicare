@@ -18,7 +18,7 @@ class SecundaryButton extends StatelessWidget
       onPressed: onPressed,
       color: Colors.red[300],
       //fillColor: Colors.transparent,
-      //splashColor: Colors.red[200],
+      splashColor: Colors.red[200],
       child: child,
       shape: const StadiumBorder(),
       );

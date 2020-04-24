@@ -9,52 +9,40 @@ class Login extends StatelessWidget
   Widget build (BuildContext context)
   {
     return new Scaffold(
+      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomPadding: false,
       backgroundColor: Color.fromARGB(255, 232, 135, 113),
       body: new SafeArea(
             child:new Container(
-            //degrade do fundo
+            //degrade e imagem do fundo
             decoration: BoxDecoration(
+                image: DecorationImage(
+                  //image: ResizeImage(AssetImage('assets/logoLogin.png'), height: 330,),
+                  image: AssetImage('assets/logoLogin.png'),
+                  alignment: Alignment.topLeft),
                 gradient: LinearGradient(
                   begin: Alignment.topRight,
                   end: Alignment.bottomLeft,
                   colors: [Color.fromARGB(255, 232, 135, 113), Color.fromARGB(255, 238, 201, 189)])),
             //widgets
-            child: new Center(
-              child: Stack(
-                alignment: AlignmentDirectional.bottomCenter,
-                children: [
-                  _buildImage(),//imagem do fundo
-                  _buildActionArea(),//area onde tera as entradas e botoes
-                ],
+            child: new SizedBox(
+              width: double.infinity,
+              height: double.infinity,
+              child: Center(
+                child: Container(
+                  padding: EdgeInsets.only(bottom: 10),
+                  child:  new LoginForm()
+                )
               )
             )
           )
-      ));
-  }
-
-  Widget _buildImage()
-  {
-    return new Positioned(
-      top: 0,
-      left: 0,
-      child: Container(
-          height: 350,
-          child: Image.asset('assets/logoLogin.png')
-      )
-    );
-  }
-
-  Widget _buildActionArea()
-  {
-    return new Positioned(
-      top: 360,
-      child: Center(
-      child: new LoginForm()
       )
     );
   }
 }
 
+//compoe todas as partes relevantes para o login
+//como a caixa de texto e os botoes
 class LoginForm extends StatefulWidget {
   @override
   LoginFormState createState() {
@@ -62,105 +50,121 @@ class LoginForm extends StatefulWidget {
   }
 }
 
-// Create a corresponding State class.
-// This class holds data related to the form.
 class LoginFormState extends State<LoginForm> {
-  // Create a global key that uniquely identifies the Form widget
-  // and allows validation of the form.
-  //
-  // Note: This is a GlobalKey<FormState>,
-  // not a GlobalKey<MyCustomFormState>.
+
+  //ver: https://flutter.dev/docs/cookbook/forms/validation
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    // Build a Form widget using the _formKey created above.
     return Form(
       key: _formKey,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          _buildInput(),
-          _buildButtons()
+          _buildInput(), //caixa de entrada de texto
+          _buildForgetButton(),
+          _buildButtons() //botoes de login e sign in
         ],
       ),
     );
   }
-
+  Widget _buildForgetButton()
+  {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: Container(
+      margin: EdgeInsets.only(top:5, right:10),
+      child: FlatButton(
+        onPressed: (){
+          //vai para pagina
+        },
+        color: Colors.transparent,
+        textColor: Colors.white,
+        child:
+        Text("Forgot Password") )
+      )
+    );
+  }
   Widget _buildInput()
   {
-  //   TextFormField(
-  //   validator: (value) {
-  //     if (value.isEmpty) {
-  //       return 'Please enter some text';
-  //     }
-  //     return null;
-  //   },
-  // )
-    return new SizedBox(
-      width: 350,
-      height: 180,
-      child: WhiteContainers(
-      child: Center(
-        child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Container(
-            width: 290,
-            child:
+    return new Container( 
+      //padding se reajusta para que o teclado nao fique
+      //sobre a caixa de texto
+      padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom),
+      child: 
+        SizedBox(
+        width: 345,
+        height: 180,
+        //widget personalizado
+        //(ver:apostolicare/widgets/whiteContainer.dart )
+        child: WhiteContainers( 
+        child: Center(
+          child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              width: 290,
+              child:
+                //ENTRADA LOGIN
+                TextFormField(
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.mail),
+                  hintText: "E-mail adress"
+                ),
+                //alterar esse metodo para validar email
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Incorrect e-mail adress';
+                  }
+                  return null;
+                },
+              )
+            ),
+            Container(
+              width: 290,            
+              child: 
+              //ENTRADA SENHA
               TextFormField(
-              decoration: const InputDecoration(
-                icon: Icon(Icons.mail),
-                hintText: "E-mail adress"
-              ),
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Incorrect e-mail adress';
-                }
-                return null;
-              },
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.vpn_key),
+                  hintText: "Password"
+                ),
+                obscureText: true,
+                //alterar esse metodo para validar senha
+                validator: (value) {  
+                  if (value.isEmpty) {
+                    return 'Incorrect password';
+                  }
+                  return null;
+                },
+              )
             )
-          ),
-          Container(
-            width: 290,            
-            child:
-              TextFormField(
-              decoration: const InputDecoration(
-                icon: Icon(Icons.vpn_key),
-                hintText: "Password"
-              ),
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Incorrect password';
-                }
-                return null;
-              },
-            )
-          )
-        ],
-      ) 
-    )
-    )
-    );
+          ],
+        ) 
+      )
+      )
+    ));
   }
 
   Widget _buildButtons()
   {
     return Container(
-      margin: EdgeInsets.only(top: 20),
+      margin: EdgeInsets.only(top: 10),
       child: SizedBox(
       width: 350,
-      height: 130,
+      height: 140,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
+          //BOTAO LOGIN
           MainButton(
               onPressed: () {
-                // Validate returns true if the form is valid, or false
-                // otherwise.
+                //tenta validar as entradas de texto
                 if (_formKey.currentState.validate()) {
-                  // If the form is valid, display a Snackbar.
                   Scaffold.of(context)
                       .showSnackBar(SnackBar(content: Text('Processing Data')));
                 }
@@ -170,12 +174,11 @@ class LoginFormState extends State<LoginForm> {
                                   fontWeight: FontWeight.bold, fontSize: 19,
                                   color: Colors.white),),
           ),
+          //BOTAO SIGN IN
           SecundaryButton(
               onPressed: () {
-                // Validate returns true if the form is valid, or false
-                // otherwise.
+                //vai para tela de novo usuario
                 if (_formKey.currentState.validate()) {
-                  // If the form is valid, display a Snackbar.
                   Scaffold.of(context)
                       .showSnackBar(SnackBar(content: Text('Processing Data')));
                 }
