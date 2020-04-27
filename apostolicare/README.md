@@ -13,7 +13,9 @@ Para rodar o aplicativo você terá a opção de configurar um emulador no Andro
 Após instalar o flutter e o Android Studio, será necessário confirar o editor de texto. Eu recomendo utilizar o VSCodo. O tutorial do flutter está neste link: https://flutter.dev/docs/get-started/editor?tab=vscode
 
 Com relação aos packages extras que o projeto está utilizando:
-  -Para o ícone: https://medium.com/@psyanite/how-to-add-app-launcher-icons-in-flutter-bd92b0e0873a
+  
+  -Para o ícone, https://medium.com/@psyanite/how-to-add-app-launcher-icons-in-flutter-bd92b0e0873a
+  
   -Para o armazenamento:https://flutter.dev/docs/cookbook/persistence/key-value
   
   Como o pubspec.yaml já está configurado, os únicos comando que será necessário rodar no terminal são para instalar o laucher icons: flutter packages get; flutter packages pub run flutter_launcher_icons:main
