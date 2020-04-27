@@ -1,4 +1,8 @@
+import 'package:apostolicare/screens/newUser/questions/firstQuestionCH.dart';
+import 'package:apostolicare/screens/newUser/questions/firstQuestionNH.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class Questions1 extends StatelessWidget
 {
@@ -9,13 +13,13 @@ class Questions1 extends StatelessWidget
                       fontSize: 19,
                       color: Color.fromARGB(255, 34, 32, 40));
   }
+  Widget _options = new OptButton();
 
   @override 
   Widget build(BuildContext context)
   {
     return Scaffold(
      backgroundColor: Color.fromARGB(255, 241, 238, 231),
-     //backgroundColor: Colors.white,
       body: Center(
         child: new SafeArea(
         child: Column(
@@ -23,7 +27,7 @@ class Questions1 extends StatelessWidget
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             _buildTitlePage(),
-            //_buildProgressBar(),
+            _buildProgressBar(),
             _buildQuestions(),
             _buildButtons(context)
         ]),
@@ -49,6 +53,41 @@ class Questions1 extends StatelessWidget
     );
   }
 
+  Widget _buildProgressBar()
+  {
+    return Container( 
+    padding: EdgeInsets.only(top: 20, bottom: 30),
+    child: SizedBox(
+      width: double.infinity,
+      height: 10,
+      child: Stack(
+        children: <Widget>[
+          Positioned(
+            top: 5,
+            child: SizedBox(
+              height: 2,
+              width: 360,
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 10),
+                color: Colors.black ),
+            )
+            ),
+          Positioned(
+            top: 0,
+            left: 10,
+            child: Container(
+              padding: EdgeInsets.all(5),
+              decoration:
+              BoxDecoration(shape: BoxShape.circle, color: Colors.black)
+            )
+          ),
+        ],
+      ),
+    )
+    );
+
+  }
+
   Widget _buildQuestions()
   {
     return Container(
@@ -68,7 +107,7 @@ class Questions1 extends StatelessWidget
                           style: _txtStyle(),
             )),
           Container(
-            child: new OptButton()
+            child: _options
           )
         ]
       ),
@@ -95,7 +134,22 @@ class Questions1 extends StatelessWidget
                     decoration: BoxDecoration(border: Border(bottom: BorderSide(width:2.5))),
                     child:Text("Let's start", style: _txtStyle(),)),
                   //Vai para próxima pagina
-                  onPressed: (){},                )
+                  onPressed: () async {
+                    //pega os dados
+                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                    int selected = (prefs.getInt('selected') ?? 0);
+                    print(selected);
+                    //Dependendo do valor selecionado
+                    //vai para a pagina correspondente
+                    if(selected == 1){
+                      Navigator.push(_context,
+                        MaterialPageRoute(builder: (context) => firstQuestionCH()));
+                    }
+                    else{
+                      Navigator.push(_context,
+                        MaterialPageRoute(builder: (context) => firstQuestionNH()));
+                    }
+                  },                )
               ])
     );
   }
@@ -111,6 +165,7 @@ class OptButton extends StatefulWidget
 //o valor da resposta fica salvo em selected
 class OptButtonsState extends State<OptButton>
 {
+  
   static _txtStyle()
   {
     return TextStyle(fontFamily: 'RobotoMono', 
@@ -120,11 +175,31 @@ class OptButtonsState extends State<OptButton>
   }
 
   int _selected;
+
   @override
   void initState()
   {
     super.initState();
-    _selected = 0;
+    _loadSelected();
+  }
+
+  //carrega dados
+  _loadSelected() async {
+    SharedPreferences.setMockInitialValues({});
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _selected = (prefs.getInt('selected') ?? 0);
+    });
+  }
+
+  //Seta dados dependendo do botao pressionado
+  _setSelected(int value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _selected = value;
+      prefs.setInt('selected', _selected);
+    });
   }
 
   Widget build(BuildContext context)
@@ -140,9 +215,8 @@ class OptButtonsState extends State<OptButton>
                           groupValue: _selected,
                           activeColor: Color.fromARGB(255, 34, 32, 40), 
                           onChanged: (int value){
-                             setState(() {_selected = value;});
-                          }
-                    )
+                            _setSelected(value);
+                          })
           ),
           ListTile(
             title: Text("Can Help", style: _txtStyle()),
@@ -150,13 +224,13 @@ class OptButtonsState extends State<OptButton>
                           groupValue: _selected,
                           activeColor: Color.fromARGB(255, 34, 32, 40), 
                           onChanged: (int value){
-                             setState(() {_selected = value;});
-                          } 
-                      )
+                            _setSelected(value);
+                          })
           )
         ]
       )
     );
   }
+
 }
 
