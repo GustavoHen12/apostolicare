@@ -1,5 +1,6 @@
 import 'package:apostolicare/screens/newUser/questions/firstQuestionCH.dart';
 import 'package:apostolicare/screens/newUser/questions/firstQuestionNH.dart';
+import 'package:apostolicare/widgets/generalConfig.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,6 +14,9 @@ class Questions1 extends StatelessWidget
                       fontSize: 19,
                       color: Color.fromARGB(255, 34, 32, 40));
   }
+
+  var _settings = new Rules();
+
   Widget _options = new OptButton();
 
   @override 
@@ -99,12 +103,12 @@ class Questions1 extends StatelessWidget
           Container(
             padding: EdgeInsets.only(top: 0),
             child: Text("First, we need some informations",
-                        style: _txtStyle(),
+                        style: _settings.txtStyle,
             )),
           Container(
             padding: EdgeInsets.only(top: 20),
             child: Text("You:",
-                          style: _txtStyle(),
+                          style: _settings.txtStyle,
             )),
           Container(
             child: _options
@@ -123,7 +127,7 @@ class Questions1 extends StatelessWidget
         children: <Widget>[
                 IconButton(icon: Icon(Icons.arrow_back), 
                           iconSize: 45,
-                          color: Color.fromARGB(255, 34, 32, 40),
+                          color: _settings.colorDark,
                           onPressed: (){
                             Navigator.pop(_context);
                           }
