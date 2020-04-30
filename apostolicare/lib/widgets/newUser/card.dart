@@ -1,43 +1,37 @@
+import 'package:apostolicare/widgets/screenSize.dart';
 import 'package:flutter/material.dart';
 
 class QuestionCard extends StatelessWidget
 {
-  QuestionCard({@required this.child});
-
   final Widget child;
+  final bool active;
+  QuestionCard({@required this.child, @required this.active});
 
-  @override
+
+  @override 
   Widget build (BuildContext context)
   {
-    return Expanded(child: 
-      Align(
-        alignment: Alignment.center,
-        child: AspectRatio(
-          aspectRatio: 3/4,
-          child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 25, vertical:10),
-            decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                              begin: Alignment.topRight,
-                              end: Alignment.bottomLeft,
-                              colors: [Color.fromARGB(255, 232, 135, 113), Color.fromARGB(255, 238, 201, 189)]),
-                          boxShadow: [BoxShadow(
-                            color: Colors.grey[900],
-                            blurRadius: 10.0, // has the effect of softening the shadow
-                            spreadRadius: .5, // has the effect of extending the shadow
-                            offset: Offset(
-                              3.0, // horizontal, move right 10
-                              3.0, // vertical, move down 10
-                            ))],
-                          border: Border.all(
-                                  color: Colors.transparent,
-                                  ),
-                          borderRadius: BorderRadius.all(Radius.circular(35))
-                        ),
-            child: child,
-    )
-    )
-    )
+    final double blur = active ? 20:10;
+    final double offset = active ? 8:3;
+    final double top = active ? 70: 100;
+
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 500),
+      curve: Curves.easeOutQuint,
+      margin: EdgeInsets.only(top: top, bottom: 50, right: 30),
+      decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [BoxShadow(
+                      color: Colors.grey[900],
+                      blurRadius: blur, 
+                      spreadRadius: .5, 
+                      offset: Offset(
+                        offset, 
+                        offset,
+                      ))],
+                    borderRadius: BorderRadius.all(Radius.circular(35))
+                  ),
+      child: child,
     );
   }
 }

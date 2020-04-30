@@ -11,6 +11,14 @@ class Rules
                       color: Color.fromARGB(255, 34, 32, 40));
   }
 
+  get txtStileTitle
+  {
+    return TextStyle(fontFamily: 'RobotoMono', 
+                              fontWeight: FontWeight.bold, 
+                              fontSize: 35,
+                              color: Colors.black);
+  }
+
   txtStyleBold(double size)
   {
     return TextStyle(fontFamily: 'RobotoMono', 

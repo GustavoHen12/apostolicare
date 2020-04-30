@@ -48,10 +48,7 @@ class Questions1 extends StatelessWidget
       Align(
         alignment: Alignment.topLeft,
         child: Text("New User",
-              style: TextStyle(fontFamily: 'RobotoMono', 
-                              fontWeight: FontWeight.bold, 
-                              fontSize: 35,
-                              color: Colors.black),
+              style: _settings.txtStileTitle
               )
       )
     );
@@ -151,7 +148,7 @@ class Questions1 extends StatelessWidget
                     }
                     else{
                       Navigator.push(_context,
-                        MaterialPageRoute(builder: (context) => firstQuestionNH()));
+                        MaterialPageRoute(builder: (context) => QuestionsNH()));
                     }
                   },                )
               ])
