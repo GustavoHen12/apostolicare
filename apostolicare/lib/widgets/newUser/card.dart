@@ -11,8 +11,8 @@ class QuestionCard extends StatelessWidget
   @override 
   Widget build (BuildContext context)
   {
-    final double blur = active ? 20:10;
-    final double offset = active ? 8:3;
+    final double blur = active ? 10:15;
+    final double offset = active ? 2:1;
     final double top = active ? 70: 100;
 
     return AnimatedContainer(
@@ -22,14 +22,14 @@ class QuestionCard extends StatelessWidget
       decoration: BoxDecoration(
                     color: Colors.white,
                     boxShadow: [BoxShadow(
-                      color: Colors.grey[900],
+                      color: Colors.grey,
                       blurRadius: blur, 
-                      spreadRadius: .5, 
+                      spreadRadius: .1, 
                       offset: Offset(
                         offset, 
                         offset,
                       ))],
-                    borderRadius: BorderRadius.all(Radius.circular(35))
+                    borderRadius: BorderRadius.all(Radius.circular(30))
                   ),
       child: child,
     );

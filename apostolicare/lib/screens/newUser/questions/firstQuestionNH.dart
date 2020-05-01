@@ -1,5 +1,6 @@
 import 'package:apostolicare/widgets/newUser/button.dart';
 import 'package:apostolicare/widgets/newUser/card.dart';
+import 'package:apostolicare/widgets/newUser/footer.dart';
 import 'package:apostolicare/widgets/title.dart';
 import 'package:flutter/material.dart';
 import 'package:apostolicare/widgets/generalConfig.dart';
@@ -30,11 +31,11 @@ class QuestionsNHState extends State<QuestionsNH> {
   {    
     super.initState();
     //inicia lista com as perguntas
-    Widget test = _buildQuestion();
-    items.add(test);
-    items.add(test);
-    items.add(test);
-    items.add(test);
+    //Widget test = _buildQuestion();
+    items.add(_buildQuestion(1));
+    items.add(_buildQuestion(2));
+    items.add(_buildQuestion(3));
+    items.add(_buildQuestion(4));
 
     //para localizar a pergunta atual
     ctrl.addListener((){
@@ -91,33 +92,52 @@ class QuestionsNHState extends State<QuestionsNH> {
   
 
 
-  Widget _buildQuestion()
+  Widget _buildQuestion(int index)
   { 
-    return new Container(
-      margin: EdgeInsets.symmetric(vertical:25),
+    return new SizedBox(
+      height: double.infinity,
+      child: Container(
+      margin: EdgeInsets.only(top:35),
       child: Column(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
       _buildText(),
       Container(
-      margin: EdgeInsets.only(top: 30), 
+      margin: EdgeInsets.only(top: 20), 
       child: SizedBox(
         height: 200,
         child: Center(
           child: OptionsAswers()
           )
         )
-      )
+      ),
+      SizedBox(height: 25),
+      _buildIndPag(index),
     ])
-    );
+    ));
   }
 
   Widget _buildText()
   {
-    return Container( 
+    return  Container( 
       padding: EdgeInsets.only(left: 10, right: 7),
       child: Text("Pergunta dúvida o que e isso ?",
                 style: _settings.txtStyle,)
       );
+  }
+
+  Widget _buildIndPag(int index)
+  {
+    return Container(
+      margin: EdgeInsets.only(bottom: 30),
+      child: Align(
+      alignment: Alignment.bottomCenter,
+      child: Container(
+      child: FooterIndex(
+        page: index,
+        quantPages: 4,
+      ),)));
   }
 
 }
@@ -147,6 +167,7 @@ class OptionsAswersState extends State<OptionsAswers> {
     return new 
       Container(
         child: new ListView.builder(
+        addAutomaticKeepAlives: false,
         itemCount: sampleData.length,
         itemBuilder: (BuildContext context, int index) {
           return new InkWell(

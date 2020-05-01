@@ -32,7 +32,7 @@ class _QuestionButtonState extends State<QuestionButton> {
     var active = widget.item.active;
 
     return SizedBox(
-      height: 40,
+      height: 45,
       width: double.infinity,
         child: AnimatedContainer(
         duration: Duration(milliseconds: 500),
@@ -40,15 +40,15 @@ class _QuestionButtonState extends State<QuestionButton> {
         decoration: BoxDecoration(
                     color: active ? _settings.colorMiddleRed: Colors.white,
                     boxShadow: [BoxShadow(
-                      color: active? Colors.grey[900]:Colors.transparent,
+                      color: active? Colors.grey[400]:Colors.transparent,
                       blurRadius: 6, 
                       spreadRadius: .5, 
-                      offset: Offset(3, 3))],
+                      offset: Offset(4, 0))],
                   ), 
         child: Center(child:Text(widget.item.text,
                     style: TextStyle(fontFamily: 'RobotoMono', 
                       fontWeight: FontWeight.bold, 
-                      fontSize: 19,
+                      fontSize: 17.5,
                       color: active ? Colors.white: Colors.black
                     ),)) 
         )
