@@ -26,7 +26,7 @@ class FooterIndex extends StatelessWidget
                   margin: EdgeInsets.symmetric(horizontal: 1),
                   padding: EdgeInsets.all(3.0),
                   decoration: BoxDecoration(
-                      color: index == (page-1)? Colors.black: Colors.transparent,
+                      color: index == page? Colors.black: Colors.transparent,
                       border: Border.all(width: 2, color: Colors.black),
                       shape: BoxShape.circle
                     ),

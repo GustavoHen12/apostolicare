@@ -1,3 +1,4 @@
+import 'package:apostolicare/api/questionsApi.dart';
 import 'package:apostolicare/widgets/newUser/button.dart';
 import 'package:apostolicare/widgets/newUser/card.dart';
 import 'package:apostolicare/widgets/newUser/footer.dart';
@@ -32,10 +33,12 @@ class QuestionsNHState extends State<QuestionsNH> {
     super.initState();
     //inicia lista com as perguntas
     //Widget test = _buildQuestion();
-    items.add(_buildQuestion(1));
-    items.add(_buildQuestion(2));
-    items.add(_buildQuestion(3));
-    items.add(_buildQuestion(4));
+    // items.add(_buildQuestion(1));
+    // items.add(_buildQuestion(2));
+    // items.add(_buildQuestion(3));
+    // items.add(_buildQuestion(4));
+
+    loadQuestion();
 
     //para localizar a pergunta atual
     ctrl.addListener((){
@@ -45,6 +48,19 @@ class QuestionsNHState extends State<QuestionsNH> {
       }
     }
     );
+  }
+
+  var repository = new QuestinsApi();
+  //List _list = new List();
+
+  void loadQuestion() async{
+    List result = await repository.loadQuestions();
+    int length = result.length;
+    setState(() {
+      result.asMap().forEach((index, item) {
+        items.add(_buildQuestion(index, length, item['question'], item['answers']));
+      });
+    });
   }
 
   @override
@@ -92,7 +108,7 @@ class QuestionsNHState extends State<QuestionsNH> {
   
 
 
-  Widget _buildQuestion(int index)
+  Widget _buildQuestion(int index, int length, String question, var answers)
   { 
     return new SizedBox(
       height: double.infinity,
@@ -102,32 +118,32 @@ class QuestionsNHState extends State<QuestionsNH> {
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-      _buildText(),
+      _buildText(question),
       Container(
       margin: EdgeInsets.only(top: 20), 
       child: SizedBox(
         height: 200,
         child: Center(
-          child: OptionsAswers()
+          child: OptionsAswers(answers)
           )
         )
       ),
-      SizedBox(height: 25),
-      _buildIndPag(index),
+      SizedBox(height: 25 ),
+      _buildIndPag(index, length),
     ])
     ));
   }
 
-  Widget _buildText()
+  Widget _buildText(String question)
   {
     return  Container( 
       padding: EdgeInsets.only(left: 10, right: 7),
-      child: Text("Pergunta dúvida o que e isso ?",
+      child: Text(question,
                 style: _settings.txtStyle,)
       );
   }
 
-  Widget _buildIndPag(int index)
+  Widget _buildIndPag(int index, int length)
   {
     return Container(
       margin: EdgeInsets.only(bottom: 30),
@@ -136,13 +152,15 @@ class QuestionsNHState extends State<QuestionsNH> {
       child: Container(
       child: FooterIndex(
         page: index,
-        quantPages: 4,
+        quantPages: length,
       ),)));
   }
 
 }
 
 class OptionsAswers extends StatefulWidget {
+  var answers;
+  OptionsAswers(this.answers);
   @override
   createState() {
     return new OptionsAswersState();
@@ -156,10 +174,19 @@ class OptionsAswersState extends State<OptionsAswers> {
   @override
   void initState() {
     super.initState();
-    sampleData.add(new ButtonModel('Botao1', false));
-    sampleData.add(new ButtonModel('Botao2', false));
-    sampleData.add(new ButtonModel('Botao3', false));
-    sampleData.add(new ButtonModel('Botao4', false));
+    // widget.answers.asMap().forEach((index, option){
+    //   sampleData.add(new ButtonModel(option[index.toString()], false));
+    // });
+    for(int i = 1; i <= 4; i++)
+    {
+      String index = i.toString();
+      if(widget.answers[index] != "")
+        sampleData.add(new ButtonModel(widget.answers[index], false));
+    }
+    // if(widget.answers[1] sampleData.add(new ButtonModel('Botao1', false));
+    // sampleData.add(new ButtonModel('Botao2', false));
+    // sampleData.add(new ButtonModel('Botao3', false));
+    // sampleData.add(new ButtonModel('Botao4', false));
   }
 
   @override
@@ -167,7 +194,7 @@ class OptionsAswersState extends State<OptionsAswers> {
     return new 
       Container(
         child: new ListView.builder(
-        addAutomaticKeepAlives: false,
+        physics: NeverScrollableScrollPhysics(),
         itemCount: sampleData.length,
         itemBuilder: (BuildContext context, int index) {
           return new InkWell(
