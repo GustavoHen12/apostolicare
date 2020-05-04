@@ -1,18 +1,12 @@
 import 'package:apostolicare/screens/newUser/questions/questions.dart';
 import 'package:apostolicare/widgets/generalConfig.dart';
+import 'package:apostolicare/widgets/newUser/progressBar.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
 class Questions1 extends StatelessWidget
 {
-  static _txtStyle()
-  {
-    return TextStyle(fontFamily: 'RobotoMono', 
-                      fontWeight: FontWeight.bold, 
-                      fontSize: 19,
-                      color: Color.fromARGB(255, 34, 32, 40));
-  }
 
   var _settings = new Rules();
 
@@ -31,7 +25,7 @@ class Questions1 extends StatelessWidget
           children: <Widget>[
             _buildTitlePage(),
             _buildProgressBar(),
-            _buildQuestions(),
+            _buildQuestion(),
             _buildButtons(context)
         ]),
       ),
@@ -56,39 +50,13 @@ class Questions1 extends StatelessWidget
   Widget _buildProgressBar()
   {
     return Container( 
-    padding: EdgeInsets.only(top: 20, bottom: 30),
-    child: SizedBox(
-      width: double.infinity,
-      height: 10,
-      child: Stack(
-        children: <Widget>[
-          Positioned(
-            top: 5,
-            child: SizedBox(
-              height: 2,
-              width: 360,
-              child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 10),
-                color: Colors.black ),
-            )
-            ),
-          Positioned(
-            top: 0,
-            left: 10,
-            child: Container(
-              padding: EdgeInsets.all(5),
-              decoration:
-              BoxDecoration(shape: BoxShape.circle, color: Colors.black)
-            )
-          ),
-        ],
-      ),
-    )
+    padding: EdgeInsets.only(left: 5),
+    child: ProgressBar(position: -1)
     );
 
   }
 
-  Widget _buildQuestions()
+  Widget _buildQuestion()
   {
     return Container(
       padding: EdgeInsets.only(top: 15, left: 20),
@@ -132,37 +100,52 @@ class Questions1 extends StatelessWidget
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 3),
                     decoration: BoxDecoration(border: Border(bottom: BorderSide(width:2.5))),
-                    child:Text("Let's start", style: _txtStyle(),)),
+                    child:Text("Let's start", style: _settings.txtStyle,)),
                   //Vai para próxima pagina
                   onPressed: () async {
                     //pega os dados
                     SharedPreferences prefs = await SharedPreferences.getInstance();
                     int selected = (prefs.getInt('selected') ?? 0);
-                    print(selected);
-                    //Dependendo do valor selecionado
-                    //vai para a pagina correspondente
-                    if(selected == 1){
-                      Navigator.push(_context,
-                        MaterialPageRoute(builder: (context) => Questions("needHelp")));
+                    //se nao selecionou nenhuma das opções exibe mensagem de erro
+                    if((selected != 1) && (selected != 2)){
+                      showDialog(
+                        context: _context,
+                        builder: (_) {
+                          return AlertDialog(
+                            title: Text('Erro'),
+                            content: Text('Please select one of the options'),
+                            actions: [
+                              FlatButton(
+                                onPressed: () => Navigator.pop(_context, true),
+                                child: Text('Ok'),
+                              ),
+                            ],
+                          );
+                        }).then((exit) {
+                        if (exit == null) return;
+                        });
                     }
                     else{
-                      Navigator.push(_context,
-                        MaterialPageRoute(builder: (context) => Questions("canHelp")));
+                    //passa os dados para o questionario
+                    //se vai pegar as peguntas de precisa de ajuda
+                    //ou pode ajudar
+                    Navigator.push(_context,
+                        MaterialPageRoute(builder: (context) =>  
+                            Questions((selected == 1) ? "needHelp": "canHelp")));
                     }
-                  },                )
+                  },)
               ])
     );
   }
 }
 
+//botoes para selecionar se precisa de ajuda ou se podem ajudar
+//o valor da resposta fica salvo em selected
 class OptButton extends StatefulWidget
 {
   @override 
   OptButtonsState createState() => OptButtonsState();
 }
-
-//botoes para selecionar se precisa de ajuda ou se podem ajudar
-//o valor da resposta fica salvo em selected
 class OptButtonsState extends State<OptButton>
 {
   
@@ -231,6 +214,5 @@ class OptButtonsState extends State<OptButton>
       )
     );
   }
-
 }
 

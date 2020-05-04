@@ -22,12 +22,14 @@ class Questions extends StatefulWidget {
 class QuestionsState extends State<Questions> {
   
   var _settings = new Rules();//para pegar as cores e texto
+
+  //cada item da lista "items" e um card do questionario
   List items = new List();
 
  
   final ctrl = new PageController(
     initialPage: 0,
-    viewportFraction: 0.8
+    viewportFraction: 0.8//"tamanho" da pagina
   );
   
   //para localizar qual é a página atual
@@ -40,16 +42,10 @@ class QuestionsState extends State<Questions> {
   void initState()
   {    
     super.initState();
-    //inicia lista com as perguntas
-    //Widget test = _buildQuestion();
-    // items.add(_buildQuestion(1));
-    // items.add(_buildQuestion(2));
-    // items.add(_buildQuestion(3));
-    // items.add(_buildQuestion(4));
 
+    //inicia cards de pergunta
     loadQuestion();
     
-
     //para localizar a pergunta atual
     ctrl.addListener((){
       int next = ctrl.page.round();
@@ -60,6 +56,7 @@ class QuestionsState extends State<Questions> {
     );
   }
 
+  //Api para pegar as perguntas
   var repository = new QuestinsApi();
   void loadQuestion() async{
     //se o usuario selecionar que pode ajudar
@@ -67,6 +64,8 @@ class QuestionsState extends State<Questions> {
     //se o ususario precisar de ajuda
     if(widget.flag == "needHelp")
       result = await repository.loadQuestionsNH();
+
+    //constroi conteudo do card
     int length = result.length;
     setState(() {
       result.asMap().forEach((index, item) {
@@ -75,19 +74,22 @@ class QuestionsState extends State<Questions> {
     });
   }
 
+  //se o usuario preencheu todas as questoes seta para true
   bool _resp = false;
+  //verifica se o usuario preencheu todo o questionario
   _checkReply() async{
-    String _reply = "";
     SharedPreferences data = await SharedPreferences.getInstance();
+    //i funciona como indice
+    //cada resposta esta no formato: {'i' : 'resposta'} (ver classe OptionsAswers)
     for(int i = 0; i < 4; i++){
       if((data.getString(i.toString()) ?? "0") == "0"){
         return;
       }
     }
+    //se saiu do for significa que para as quatro perguntas tiveram resposta
     setState(() {
       _resp = true;
     });
-
   }
 
 
@@ -100,7 +102,9 @@ class QuestionsState extends State<Questions> {
           child: 
           Column(
           children: <Widget>[
+            //header => nome da pag + barra de progresso
             _buildHeader(),
+            //card => pergunta
             _buildCard()
           ],
           )
@@ -114,10 +118,8 @@ class QuestionsState extends State<Questions> {
     return Container(
       child: Column(children: <Widget>[
         new TitlePage(text: "New User"),
-        new ProgressBar(
-          position: _position,
-        )
-      ],),
+        new ProgressBar(position: _position)
+      ]),
     );
   }  
 
@@ -133,40 +135,44 @@ class QuestionsState extends State<Questions> {
             return QuestionCard(child: items[index], active: active);
           },
           onPageChanged: (int index){
+            //seta posicao da barra de progresso
             setState(() {
               _position = index.toDouble();
-            });//seta posicao da barra de progresso
+            });
           },
         )
       );
   }
 
-  
-
-
+  //constroi card de pergunta 
+  //que e armazenado na lista "items"
   Widget _buildQuestion(int index, int length, String question, var answers)
   { 
+    //index = numero da pagina (0 a 3)
+    //length = quantidade total de paginas
+    //question = pergunta
+    //answers = resposta (objeto no format: {'i' : 'resposta'} - ver questionsApi) 
     return new SizedBox(
       height: double.infinity,
       child: Container(
-      margin: EdgeInsets.only(top:35),
-      child: Column(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-      _buildText(question),
-      Container(
-      margin: EdgeInsets.only(top: 20), 
-      child: SizedBox(
-        height: 200,
-        child: Center(
-          child: OptionsAswers(answers, index)
-          )
-        )
-      ),
-      SizedBox(height: 25),
-      Flexible(child: _buildIndPag(index, length)),
-    ])
+        margin: EdgeInsets.only(top:35),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+          //PERGUNTA
+          _buildText(question),
+          //RESPOSTAS
+          Container(
+            margin: EdgeInsets.only(top: 20), 
+            child: SizedBox(
+              height: 200,
+              child: Center(
+                child: OptionsAswers(answers, index)))),
+          SizedBox(height: 25),//so para dar um espaco entre as respostas e o rodape
+          //RODAPE DO CARD
+          Flexible(child: _buildIndPag(index, length)),
+        ])
     ));
   }
 
@@ -179,41 +185,42 @@ class QuestionsState extends State<Questions> {
       );
   }
   
-  // exibe o dialog
-  
+  nextButton() async{
+    //verifica se todas as respostas foram marcadas
+    await _checkReply(); 
+    if(_resp)
+      //se foram vai para proxima pagina
+      Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => RegisterPage()));
+    else
+      //se nao exibe mensagem de erro
+      showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            title: Text('Erro'),
+            content: Text('It seems that some question has not been answered'),
+            actions: [
+              FlatButton(
+                onPressed: () => Navigator.pop(context, true), // passing true
+                child: Text('Ok'),
+              ),
+            ],
+          );
+        }).then((exit) {
+      if (exit == null) return;
+      });
+  }
+
+  //indice da pagina = rodape da pagina
   Widget _buildIndPag(int index, int length)
   {
-    Widget foot = FooterIndex(
-        page: index,
-        quantPages: length,
-    );
+    Widget foot = FooterIndex(page: index, quantPages: length);
+    //se for a ultima pagina coloca botao "next"
     if(index == length-1)
       foot = new SecundaryButton(
         onPressed: () async {
-          //verifica se todas as respostas foram marcadas
-          await _checkReply(); 
-          if(_resp)
-            //se foram vai para proxima pagina
-            Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => RegisterPage()));
-          else
-            //se nao exibe mensagem de erro
-           showDialog(
-              context: context,
-              builder: (_) {
-                return AlertDialog(
-                  title: Text('Erro'),
-                  content: Text('It seems that some question has not been answered'),
-                  actions: [
-                    FlatButton(
-                      onPressed: () => Navigator.pop(context, true), // passing true
-                      child: Text('Ok'),
-                    ),
-                  ],
-                );
-              }).then((exit) {
-            if (exit == null) return;
-            });
+          nextButton();
         }, 
         child: Text("Next", style: TextStyle(fontFamily: 'RobotoMono', 
                                   fontWeight: FontWeight.bold, fontSize: 18,
@@ -222,92 +229,11 @@ class QuestionsState extends State<Questions> {
     return Container(
       padding: EdgeInsets.only(bottom: 25),
       child: Align(
-      alignment: Alignment.bottomCenter,
-      child: Container(
-      child: foot,
+        alignment: Alignment.bottomCenter,
+        child: Container(
+          child: foot,
         )
       )
     );
-  }
-
-}
-
-class OptionsAswers extends StatefulWidget {
-  final answers;
-  final int page;
-  OptionsAswers(this.answers, this.page);
-  @override
-  createState() {
-    return new OptionsAswersState();
-  }
-}
-
-class OptionsAswersState extends State<OptionsAswers> {
-  List<ButtonModel> sampleData = new List<ButtonModel>();
-  var _settings = new Rules();//para pegar as cores e texto
-
-  @override
-  void initState() {
-    super.initState();
-
-    _loadAnswers();  
-  }
-
-  String _reply;
-
-  //carrega dados
-  _loadAnswers() async {
-    //SharedPreferences.setMockInitialValues({});
-    SharedPreferences data = await SharedPreferences.getInstance();
-    setState(() {
-        _reply = (data.getString(widget.page.toString()) ?? "0");
-    });
-    
-    for(int i = 1; i <= 4; i++)
-    {
-      String index = i.toString();
-      if(widget.answers[index] != "")
-        if(_reply == widget.answers[index])
-          sampleData.add(new ButtonModel(widget.answers[index], true));
-        else
-          sampleData.add(new ButtonModel(widget.answers[index], false));
-    }
-  }
-
-  //Seta dados dependendo do botao pressionado
-  _setAnswers(String answer) async {
-    SharedPreferences data = await SharedPreferences.getInstance();
-    setState(() {
-      _reply = answer;
-      data.setString(widget.page.toString(), _reply);
-    });
-  }
-
-
-  @override
-  Widget build(BuildContext context) {
-    return new 
-      Container(
-        child: new ListView.builder(
-        physics: NeverScrollableScrollPhysics(),
-        itemCount: sampleData.length,
-        itemBuilder: (BuildContext context, int index) {
-          return new InkWell(
-            //highlightColor: Colors.red,
-            splashColor: _settings.colorMiddleRed,
-            onTap: () {
-              setState(() {
-                //seta o botao
-                sampleData.forEach((element) => element.active = false);
-                sampleData[index].active = true;
-                //coloca no banco de dados
-                _setAnswers(sampleData[index].text);
-              });
-            },
-            child: new QuestionButton(sampleData[index]),
-          );
-          },
-        ),
-      );
   }
 }
