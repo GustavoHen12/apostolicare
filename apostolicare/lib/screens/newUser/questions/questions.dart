@@ -1,19 +1,25 @@
 import 'package:apostolicare/api/questionsApi.dart';
+import 'package:apostolicare/screens/newUser/register/register.dart';
+import 'package:apostolicare/widgets/SecundaryButton.dart';
 import 'package:apostolicare/widgets/newUser/button.dart';
 import 'package:apostolicare/widgets/newUser/card.dart';
 import 'package:apostolicare/widgets/newUser/footer.dart';
+import 'package:apostolicare/widgets/newUser/progressBar.dart';
 import 'package:apostolicare/widgets/title.dart';
 import 'package:flutter/material.dart';
 import 'package:apostolicare/widgets/generalConfig.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
-class QuestionsNH extends StatefulWidget {
+class Questions extends StatefulWidget {
+  final flag;
+  Questions(this.flag);
+
   @override
-  QuestionsNHState createState() => QuestionsNHState();
+  QuestionsState createState() => QuestionsState();
 }
 
-class QuestionsNHState extends State<QuestionsNH> {
+class QuestionsState extends State<Questions> {
   
   var _settings = new Rules();//para pegar as cores e texto
   List items = new List();
@@ -27,6 +33,8 @@ class QuestionsNHState extends State<QuestionsNH> {
   //para localizar qual é a página atual
   int currentPage = 0;
 
+  //para posicionar corretamente a barra de progresso
+  double _position = 0.0;
 
   @override
   void initState()
@@ -53,16 +61,33 @@ class QuestionsNHState extends State<QuestionsNH> {
   }
 
   var repository = new QuestinsApi();
-  //List _list = new List();
-
   void loadQuestion() async{
-    List result = await repository.loadQuestions();
+    //se o usuario selecionar que pode ajudar
+    List result = await repository.loadQuestionsCH();
+    //se o ususario precisar de ajuda
+    if(widget.flag == "needHelp")
+      result = await repository.loadQuestionsNH();
     int length = result.length;
     setState(() {
       result.asMap().forEach((index, item) {
         items.add(_buildQuestion(index, length, item['question'], item['answers']));
       });
     });
+  }
+
+  bool _resp = false;
+  _checkReply() async{
+    String _reply = "";
+    SharedPreferences data = await SharedPreferences.getInstance();
+    for(int i = 0; i < 4; i++){
+      if((data.getString(i.toString()) ?? "0") == "0"){
+        return;
+      }
+    }
+    setState(() {
+      _resp = true;
+    });
+
   }
 
 
@@ -89,6 +114,9 @@ class QuestionsNHState extends State<QuestionsNH> {
     return Container(
       child: Column(children: <Widget>[
         new TitlePage(text: "New User"),
+        new ProgressBar(
+          position: _position,
+        )
       ],),
     );
   }  
@@ -103,6 +131,11 @@ class QuestionsNHState extends State<QuestionsNH> {
           itemBuilder: (context, index){
             bool active = index == currentPage;
             return QuestionCard(child: items[index], active: active);
+          },
+          onPageChanged: (int index){
+            setState(() {
+              _position = index.toDouble();
+            });//seta posicao da barra de progresso
           },
         )
       );
@@ -131,8 +164,8 @@ class QuestionsNHState extends State<QuestionsNH> {
           )
         )
       ),
-      SizedBox(height: 25 ),
-      _buildIndPag(index, length),
+      SizedBox(height: 25),
+      Flexible(child: _buildIndPag(index, length)),
     ])
     ));
   }
@@ -145,19 +178,56 @@ class QuestionsNHState extends State<QuestionsNH> {
                 style: _settings.txtStyle,)
       );
   }
-
+  
+  // exibe o dialog
+  
   Widget _buildIndPag(int index, int length)
   {
-    print("index: ${index}");
+    Widget foot = FooterIndex(
+        page: index,
+        quantPages: length,
+    );
+    if(index == length-1)
+      foot = new SecundaryButton(
+        onPressed: () async {
+          //verifica se todas as respostas foram marcadas
+          await _checkReply(); 
+          if(_resp)
+            //se foram vai para proxima pagina
+            Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => RegisterPage()));
+          else
+            //se nao exibe mensagem de erro
+           showDialog(
+              context: context,
+              builder: (_) {
+                return AlertDialog(
+                  title: Text('Erro'),
+                  content: Text('It seems that some question has not been answered'),
+                  actions: [
+                    FlatButton(
+                      onPressed: () => Navigator.pop(context, true), // passing true
+                      child: Text('Ok'),
+                    ),
+                  ],
+                );
+              }).then((exit) {
+            if (exit == null) return;
+            });
+        }, 
+        child: Text("Next", style: TextStyle(fontFamily: 'RobotoMono', 
+                                  fontWeight: FontWeight.bold, fontSize: 18,
+                                  color: Colors.grey[700]),
+                                  ));
     return Container(
-      margin: EdgeInsets.only(bottom: 30),
+      padding: EdgeInsets.only(bottom: 25),
       child: Align(
       alignment: Alignment.bottomCenter,
       child: Container(
-      child: FooterIndex(
-        page: index,
-        quantPages: length,
-      ),)));
+      child: foot,
+        )
+      )
+    );
   }
 
 }
@@ -210,7 +280,6 @@ class OptionsAswersState extends State<OptionsAswers> {
     setState(() {
       _reply = answer;
       data.setString(widget.page.toString(), _reply);
-      //print("--- ${_reply}, ${widget.page}");
     });
   }
 

@@ -3,7 +3,7 @@ import 'dart:convert';
 
 class QuestinsApi{
 
-  Future <List> loadQuestions() async{
+  Future <List> loadQuestionsCH() async{
 
     String json = """[
       {
@@ -41,4 +41,45 @@ class QuestinsApi{
     ]""";
     return jsonDecode(json);
     }
+
+    
+    Future <List> loadQuestionsNH() async{
+
+    String json = """[
+      {
+          "question":"Are you part of a risk group",
+          "answers": {
+            "1":"Yes",
+            "2":"No",
+            "3":"",
+            "4":""}
+      },
+      {
+          "question":"Do you need products from:",
+          "answers": {
+            "1":"Market",
+            "2":"Drugstore",
+            "3":"Bakery",
+            "4":"No, I can not deliver"}
+      },
+      {
+          "question":"Have you feeling lonely ?",
+          "answers": {
+            "1":"No",
+            "2":"Yes",
+            "3":"",
+            "4":""}
+      },
+      {
+          "question":"Are you member of any church ?",
+          "answers": {
+            "1":"Yes",
+            "2":"No",
+            "3":"",
+            "4":""}
+      }
+    ]""";
+    return jsonDecode(json);
+    }
+
 }

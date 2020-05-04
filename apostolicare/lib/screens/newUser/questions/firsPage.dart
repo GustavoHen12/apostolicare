@@ -1,5 +1,4 @@
-import 'package:apostolicare/screens/newUser/questions/firstQuestionCH.dart';
-import 'package:apostolicare/screens/newUser/questions/firstQuestionNH.dart';
+import 'package:apostolicare/screens/newUser/questions/questions.dart';
 import 'package:apostolicare/widgets/generalConfig.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -144,11 +143,11 @@ class Questions1 extends StatelessWidget
                     //vai para a pagina correspondente
                     if(selected == 1){
                       Navigator.push(_context,
-                        MaterialPageRoute(builder: (context) => firstQuestionCH()));
+                        MaterialPageRoute(builder: (context) => Questions("needHelp")));
                     }
                     else{
                       Navigator.push(_context,
-                        MaterialPageRoute(builder: (context) => QuestionsNH()));
+                        MaterialPageRoute(builder: (context) => Questions("canHelp")));
                     }
                   },                )
               ])

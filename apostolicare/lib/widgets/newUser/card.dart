@@ -13,12 +13,13 @@ class QuestionCard extends StatelessWidget
   {
     final double blur = active ? 10:15;
     final double offset = active ? 2:1;
-    final double top = active ? 70: 100;
+    final double top = active ? 55: 85;
+    final double bottom = active ? 50: 55;
 
     return AnimatedContainer(
       duration: Duration(milliseconds: 500),
       curve: Curves.easeOutQuint,
-      margin: EdgeInsets.only(top: top, bottom: 50, right: 30),
+      margin: EdgeInsets.only(top: top, bottom: bottom, right: 30),
       decoration: BoxDecoration(
                     color: Colors.white,
                     boxShadow: [BoxShadow(

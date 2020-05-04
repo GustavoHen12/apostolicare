@@ -3,6 +3,9 @@ import 'package:flutter/rendering.dart';
 
 class ProgressBar extends StatefulWidget
 {
+  final double position;
+  ProgressBar({@required this.position});
+
   @override 
   ProgressBarState createState() => ProgressBarState();
 }
@@ -11,8 +14,9 @@ class ProgressBarState extends State<ProgressBar>
 {
   Widget build(BuildContext context)
   {
+    double _inicialPosition = 30;
     return Container( 
-    padding: EdgeInsets.only(top: 20, bottom: 30),
+    padding: EdgeInsets.only(top: 20),
     child: SizedBox(
       width: double.infinity,
       height: 10,
@@ -29,9 +33,10 @@ class ProgressBarState extends State<ProgressBar>
                 color: Colors.black ),
             )
             ),
-          Positioned(
+          AnimatedPositioned(
+            duration: Duration(milliseconds: 400),
             top: 0,
-            left: 10,
+            left: _inicialPosition + (widget.position*40),
             child: Container(
               padding: EdgeInsets.all(5),
               decoration:
