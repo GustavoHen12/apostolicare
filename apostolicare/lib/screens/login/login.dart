@@ -1,4 +1,5 @@
 import 'package:apostolicare/screens/newUser/questions/firsPage.dart';
+import 'package:apostolicare/screens/newUser/register/register.dart';
 import 'package:apostolicare/widgets/Mainbutton.dart';
 import 'package:apostolicare/widgets/SecundaryButton.dart';
 import 'package:apostolicare/widgets/whiteContainer.dart';
@@ -179,8 +180,10 @@ class LoginFormState extends State<LoginForm> {
           SecundaryButton(
               onPressed: () {
                 //vai para tela de novo usuario
+                // Navigator.push(context,
+                //   MaterialPageRoute(builder: (context) => Questions1()));
                 Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Questions1()));
+                  MaterialPageRoute(builder: (context) => RegisterProfile()));
               },
               child: Text('Sign in',
                           style: TextStyle(fontFamily: 'RobotoMono', 

@@ -191,7 +191,7 @@ class QuestionsState extends State<Questions> {
     if(_resp)
       //se foram vai para proxima pagina
       Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => RegisterPage()));
+                  MaterialPageRoute(builder: (context) => RegisterProfile()));
     else
       //se nao exibe mensagem de erro
       showDialog(
