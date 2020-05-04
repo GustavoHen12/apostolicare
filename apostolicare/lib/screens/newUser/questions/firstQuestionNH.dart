@@ -5,6 +5,7 @@ import 'package:apostolicare/widgets/newUser/footer.dart';
 import 'package:apostolicare/widgets/title.dart';
 import 'package:flutter/material.dart';
 import 'package:apostolicare/widgets/generalConfig.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class QuestionsNH extends StatefulWidget {
@@ -39,6 +40,7 @@ class QuestionsNHState extends State<QuestionsNH> {
     // items.add(_buildQuestion(4));
 
     loadQuestion();
+    
 
     //para localizar a pergunta atual
     ctrl.addListener((){
@@ -63,6 +65,7 @@ class QuestionsNHState extends State<QuestionsNH> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,8 +79,8 @@ class QuestionsNHState extends State<QuestionsNH> {
             _buildCard()
           ],
           )
-      ),
-    )
+        ),
+      )
     );
   }
 
@@ -124,7 +127,7 @@ class QuestionsNHState extends State<QuestionsNH> {
       child: SizedBox(
         height: 200,
         child: Center(
-          child: OptionsAswers(answers)
+          child: OptionsAswers(answers, index)
           )
         )
       ),
@@ -145,6 +148,7 @@ class QuestionsNHState extends State<QuestionsNH> {
 
   Widget _buildIndPag(int index, int length)
   {
+    print("index: ${index}");
     return Container(
       margin: EdgeInsets.only(bottom: 30),
       child: Align(
@@ -159,8 +163,9 @@ class QuestionsNHState extends State<QuestionsNH> {
 }
 
 class OptionsAswers extends StatefulWidget {
-  var answers;
-  OptionsAswers(this.answers);
+  final answers;
+  final int page;
+  OptionsAswers(this.answers, this.page);
   @override
   createState() {
     return new OptionsAswersState();
@@ -174,20 +179,41 @@ class OptionsAswersState extends State<OptionsAswers> {
   @override
   void initState() {
     super.initState();
-    // widget.answers.asMap().forEach((index, option){
-    //   sampleData.add(new ButtonModel(option[index.toString()], false));
-    // });
+
+    _loadAnswers();  
+  }
+
+  String _reply;
+
+  //carrega dados
+  _loadAnswers() async {
+    //SharedPreferences.setMockInitialValues({});
+    SharedPreferences data = await SharedPreferences.getInstance();
+    setState(() {
+        _reply = (data.getString(widget.page.toString()) ?? "0");
+    });
+    
     for(int i = 1; i <= 4; i++)
     {
       String index = i.toString();
       if(widget.answers[index] != "")
-        sampleData.add(new ButtonModel(widget.answers[index], false));
+        if(_reply == widget.answers[index])
+          sampleData.add(new ButtonModel(widget.answers[index], true));
+        else
+          sampleData.add(new ButtonModel(widget.answers[index], false));
     }
-    // if(widget.answers[1] sampleData.add(new ButtonModel('Botao1', false));
-    // sampleData.add(new ButtonModel('Botao2', false));
-    // sampleData.add(new ButtonModel('Botao3', false));
-    // sampleData.add(new ButtonModel('Botao4', false));
   }
+
+  //Seta dados dependendo do botao pressionado
+  _setAnswers(String answer) async {
+    SharedPreferences data = await SharedPreferences.getInstance();
+    setState(() {
+      _reply = answer;
+      data.setString(widget.page.toString(), _reply);
+      //print("--- ${_reply}, ${widget.page}");
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -202,8 +228,11 @@ class OptionsAswersState extends State<OptionsAswers> {
             splashColor: _settings.colorMiddleRed,
             onTap: () {
               setState(() {
+                //seta o botao
                 sampleData.forEach((element) => element.active = false);
                 sampleData[index].active = true;
+                //coloca no banco de dados
+                _setAnswers(sampleData[index].text);
               });
             },
             child: new QuestionButton(sampleData[index]),
