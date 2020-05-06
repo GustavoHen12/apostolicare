@@ -24,6 +24,8 @@ class _RegisterCommunitState extends State<RegisterCommunit> {
     SizeConfig().init(context);
     return Scaffold(
       backgroundColor: _settings.colorLight,
+      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomPadding: false,
       body: new SafeArea(
         child: Column(
           children: [

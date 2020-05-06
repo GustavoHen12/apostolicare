@@ -47,12 +47,15 @@ class _RegisterContactState extends State<RegisterContact> {
     SizeConfig().init(context);
     return Scaffold(
       backgroundColor: _settings.colorLight,
+      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomPadding: false,
       body: new SafeArea(
         child: Column(
           children: [
             _buildHeader(),
             _buildText("Contact information", 19),
             _buildInput(),
+            Spacer(),
             _buildButton()
           ] 
         )
@@ -179,7 +182,7 @@ class _RegisterContactState extends State<RegisterContact> {
   Widget _buildButton()
   {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 30),
+      margin: EdgeInsets.only(bottom: 30),
       child: SecundaryButton(
         onPressed: () {
           //PARA FAZER: validação
