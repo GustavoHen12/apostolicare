@@ -65,7 +65,7 @@ class ProgressBarRegState extends State<ProgressBarReg>
             duration: Duration(milliseconds: 400),
             top: 0,
             //calcula a nova posicao somando a posicao inicial
-            left: _inicialPosition + ((active ? widget.positionIni : widget.positionFim) *10*SizeConfig.blockSizeHorizontal),
+            left: _inicialPosition + ((active ? widget.positionIni : widget.positionFim) * 10 * SizeConfig.blockSizeHorizontal),
             //a bolinha eh apenas um container circular preto
             child: Container(
               padding: EdgeInsets.all(5.5),

@@ -1,3 +1,4 @@
+import 'package:apostolicare/screens/newUser/register/register3.dart';
 import 'package:apostolicare/social_icons_icons.dart';
 import 'package:apostolicare/widgets/generalConfig.dart';
 import 'package:apostolicare/widgets/newUser/progressBar2.dart';
@@ -181,12 +182,8 @@ class _RegisterContactState extends State<RegisterContact> {
       margin: EdgeInsets.symmetric(vertical: 30),
       child: SecundaryButton(
         onPressed: () {
-          //tenta validar as entradas de texto
-          // if (_formKey.currentState.validate()) {
-          //   //PARA FAZER: enviar dados para banco de dados
-          //   Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterContact()));
-          // }
-          Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterContact()));
+          //PARA FAZER: validação
+          Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterCommunit()));
         }, 
         child: Text("Next", style: _settings.txtStyle)),
     );

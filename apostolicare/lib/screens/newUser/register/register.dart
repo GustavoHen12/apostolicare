@@ -254,11 +254,11 @@ class _RegisterProfileState extends State<RegisterProfile> {
       child: SecundaryButton(
         onPressed: () {
           //tenta validar as entradas de texto
-          // if (_formKey.currentState.validate()) {
-          //   //PARA FAZER: enviar dados para banco de dados
-          //   Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterContact()));
-          // }
-          Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterContact()));
+          if (_formKey.currentState.validate()) {
+            //PARA FAZER: enviar dados para banco de dados
+            Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterContact()));
+          }
+          //Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterContact()));
         }, 
         child: Text("Next", style: _settings.txtStyle)),
     );
