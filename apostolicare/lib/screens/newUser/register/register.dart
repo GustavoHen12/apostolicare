@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
-import 'package:apostolicare/widgets/newUser/progressBar.dart';
 import 'package:apostolicare/widgets/title.dart';
 
 class RegisterProfile extends StatefulWidget {
@@ -179,7 +178,7 @@ class _RegisterProfileState extends State<RegisterProfile> {
       child: 
         SizedBox(
         width: _horizontalSize,
-        height: 155,
+        //height: 155,
         child: WhiteContainers( 
         child: Center(
           child: Column(
@@ -217,7 +216,7 @@ class _RegisterProfileState extends State<RegisterProfile> {
       child: 
         SizedBox(
         width: _horizontalSize,
-        height: 155,
+        //height: 155,
         child: WhiteContainers( 
         child: Center(
           child: Column(
@@ -255,10 +254,11 @@ class _RegisterProfileState extends State<RegisterProfile> {
       child: SecundaryButton(
         onPressed: () {
           //tenta validar as entradas de texto
-          if (_formKey.currentState.validate()) {
-            //PARA FAZER: enviar dados para banco de dados
-            Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterContact()));
-          }
+          // if (_formKey.currentState.validate()) {
+          //   //PARA FAZER: enviar dados para banco de dados
+          //   Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterContact()));
+          // }
+          Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterContact()));
         }, 
         child: Text("Next", style: _settings.txtStyle)),
     );
