@@ -1,3 +1,5 @@
+import 'package:apostolicare/screens/newUser/register/register2.dart';
+import 'package:apostolicare/widgets/SecundaryButton.dart';
 import 'package:apostolicare/widgets/generalConfig.dart';
 import 'package:apostolicare/widgets/screenSize.dart';
 import 'package:apostolicare/widgets/whiteContainer.dart';
@@ -28,21 +30,24 @@ class _RegisterProfileState extends State<RegisterProfile> {
     });
   }
 
+  final _formKey = GlobalKey<FormState>();
+
   var _settings = new Rules();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: _settings.colorLight,
       body: new SafeArea(
-        child: Column(
+        child: SingleChildScrollView(
+          child: Column(
           children: [
             _buildHeader(),
             _getPhotoProfile(),
-            _getPersonalData(),
-            // _getEmail()
+            _buildInputs(),
           ] 
         )
-      ),
+      )),
+      resizeToAvoidBottomInset: true,
     );
   }
   
@@ -56,8 +61,8 @@ class _RegisterProfileState extends State<RegisterProfile> {
     );
   }
 
-  Widget _getPhotoProfile()
-  {
+
+  Widget _getPhotoProfile(){
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -116,18 +121,64 @@ class _RegisterProfileState extends State<RegisterProfile> {
     );
   }
 
+
+  Widget _buildInputs()
+  {
+    
+    return Form(
+      key: _formKey,
+      child: Container(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+              child: Column(
+                children: [
+                Container(
+                  alignment: Alignment.bottomLeft,
+                  margin: EdgeInsets.only(left:10, top: 20, bottom: 10),
+                  child: Text("Please enter with your informations", style: _settings.txtStyle,),
+                ),    
+                _getPersonalData(),
+                _getEmail(),
+                _buildButton()
+            ]),));
+  }
+
+  String _validatesName (value){
+    if (value.isEmpty) {
+      return 'Please Enter with your name';
+    }
+    return null;
+  }
+
+  String _validatesDate (value){
+    if (value.isEmpty) {
+      return 'Please Enter with your name';
+    }
+    return null;
+  }
+
+  String _validatesEmail (value){
+    if (value.isEmpty) {
+      return 'Invalid Email';
+    }
+    return null;
+  }
+
+  String _validatesPassword (value){
+    if (value.isEmpty) {
+      return 'Invalid Password';
+    }
+    return null;
+  }
+  //entrada para receber o nome e data de aniversario do novo usuário
   Widget _getPersonalData(){
+    double _horizontalSize = SizeConfig.blockSizeHorizontal * 90;
     return new Container( 
-      //padding se reajusta para que o teclado nao fique
-      //sobre a caixa de texto
       margin: EdgeInsets.only(top: 15),
-      padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom),
       child: 
         SizedBox(
-        width: SizeConfig.blockSizeHorizontal * 90,
-        height: 130,
-
+        width: _horizontalSize,
+        height: 155,
         child: WhiteContainers( 
         child: Center(
           child: Column(
@@ -135,44 +186,80 @@ class _RegisterProfileState extends State<RegisterProfile> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
-              width: 290,
+              width: _horizontalSize - 20,
               child:
-                //ENTRADA LOGIN
                 TextFormField(
-                decoration: const InputDecoration(
-                  hintText: "Name"
-                ),
-                //alterar esse metodo para validar email
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Please Enter with your name';
-                  }
-                  return null;
-                },
-              )
+                  decoration: const InputDecoration( hintText: "Name"),
+                  validator: (value){return _validatesName(value);},
+                )
             ),
             Container(
-              width: 150,            
+              width: _horizontalSize - 180,            
               child: 
-              //ENTRADA SENHA
-              TextFormField(
-                decoration: const InputDecoration(
-                  hintText: "Birthday"
-                ),
-                obscureText: true,
-                //alterar esse metodo para validar senha
-                validator: (value) {  
-                  if (value.isEmpty) {
-                    return 'Incorrect password';
-                  }
-                  return null;
-                },
+                //PARA FAZER: uma caixa de entrada estilizada para data de aniversário
+                TextFormField(
+                  decoration: const InputDecoration( hintText: "Birthday"),
+                  validator: (value) { return _validatesDate(value);},
+                )
               )
-            )
           ],
         ) 
       )
       )
     ));
+  }
+
+  Widget _getEmail(){
+    double _horizontalSize = SizeConfig.blockSizeHorizontal * 90;
+    return new Container( 
+      margin: EdgeInsets.only(top: 30),
+      child: 
+        SizedBox(
+        width: _horizontalSize,
+        height: 155,
+        child: WhiteContainers( 
+        child: Center(
+          child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              width: _horizontalSize - 20,
+              child:
+                TextFormField(
+                  decoration: const InputDecoration(icon: Icon(Icons.mail), hintText: "E-mail"),
+                  validator: (value){return _validatesEmail(value);},
+                )
+            ),
+            Container(
+              width: _horizontalSize - 20,            
+              child: 
+                TextFormField(
+                  decoration: const InputDecoration(icon: Icon(Icons.vpn_key), hintText: "Password"),
+                  obscureText: true,
+                  validator: (value) { return _validatesPassword(value);},
+                )
+              )
+          ],
+        ) 
+      )
+      )
+    ));
+  }
+
+  Widget _buildButton()
+  {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 30),
+      child: SecundaryButton(
+        onPressed: () {
+          //tenta validar as entradas de texto
+          if (_formKey.currentState.validate()) {
+            //PARA FAZER: enviar dados para banco de dados
+            Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterContact()));
+          }
+        }, 
+        child: Text("Next", style: _settings.txtStyle)),
+    );
   }
 }
