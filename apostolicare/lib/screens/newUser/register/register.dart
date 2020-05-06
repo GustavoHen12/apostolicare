@@ -1,6 +1,7 @@
 import 'package:apostolicare/screens/newUser/register/register2.dart';
 import 'package:apostolicare/widgets/SecundaryButton.dart';
 import 'package:apostolicare/widgets/generalConfig.dart';
+import 'package:apostolicare/widgets/newUser/progressBar2.dart';
 import 'package:apostolicare/widgets/screenSize.dart';
 import 'package:apostolicare/widgets/whiteContainer.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +57,7 @@ class _RegisterProfileState extends State<RegisterProfile> {
     return Container(
       child: Column(children: <Widget>[
         new TitlePage(text: "New User"),
-        new ProgressBar(position: 5)
+        new ProgressBarReg(positionIni:4 ,positionFim: 5)
       ]),
     );
   }

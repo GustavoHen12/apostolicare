@@ -1,4 +1,5 @@
 import 'package:apostolicare/widgets/generalConfig.dart';
+import 'package:apostolicare/widgets/newUser/progressBar2.dart';
 import 'package:flutter/material.dart';
 import 'package:apostolicare/widgets/newUser/progressBar.dart';
 import 'package:apostolicare/widgets/title.dart';
@@ -29,7 +30,7 @@ final _formKey = GlobalKey<FormState>();
     return Container(
       child: Column(children: <Widget>[
         new TitlePage(text: "New User"),
-        new ProgressBar(position: 7)
+        new ProgressBarReg(positionIni: 5, positionFim: 7)
       ]),
     );
   }
