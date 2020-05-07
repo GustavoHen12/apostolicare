@@ -87,7 +87,7 @@ class MessagesStates extends State<Messages>{
 
   Widget _buildUserIcon(img){
     return Container(
-      margin: EdgeInsets.only(right: 10.0, left: 25.0, top: 5),
+      margin: EdgeInsets.only(right: 10.0, left: 15.0, top: 5),
       height: 80,
       width: 80,
       child:

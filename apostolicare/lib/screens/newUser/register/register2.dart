@@ -22,6 +22,11 @@ class _RegisterContactState extends State<RegisterContact> {
   bool visible = false;
   String confirmedNumber = '';
 
+  String _whatsapp = "";
+  String _telegram = "";
+  String _email = "";
+  String _phone = "";
+
   var _settings = new Rules();
 
   void onPhoneNumberChange(
@@ -100,10 +105,7 @@ class _RegisterContactState extends State<RegisterContact> {
     );
   }
 
-  String _whatsapp = "";
-  String _telegram = "";
-  String _email = "";
-  String _phone = "";
+
 
   Widget _buildOptions()
   {
